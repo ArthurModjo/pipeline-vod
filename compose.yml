@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  moniteur:
+    image: python:3.10-alpine
+    hostname: moniteur
+    working_dir: /D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/moniteur
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - studio_volume:/D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/
+    networks:
+      - sudio_video_network
+
+  downscale:
+    image: python:3.10-alpine
+    hostname: downscale
+    working_dir: /D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/downscale
+    restart: always
+    volumes:
+      - studio_volume:/D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/
+    networks:
+      - sudio_video_network
+  
+  langandsubtiles:
+    image: python:3.10-alpine
+    hostname: langandsubtiles
+    working_dir: /D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/langandsubtile
+    volumes:
+      - studio_volume:/D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/
+    networks:
+      - sudio_video_network
+
+  animaldetect:
+    image: python:3.10-alpine
+    hostname: animaldetect
+    working_dir: /D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/animaldetect
+    volumes:
+      - studio_volume:/D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/
+    networks:
+      - sudio_video_network
+
+networks:
+  sudio_video_network:
+    driver: bridge  
+volumes:
+  studio_volume:
+    

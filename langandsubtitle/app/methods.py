@@ -27,7 +27,7 @@ def detect_language(video_path):
         #print("la lanque est : ",detected_language)
         with open(video_name+"_lang.txt", 'w') as f:
             f.write(detected_language)
-        return detected_language
+        return detected_language,video_name+"_lang.txt"
     except langdetect.lang_detect_exception.LangDetectException as e:
         return f"Erreur lors de la détection de la langue : {e}"
     finally:
@@ -82,4 +82,5 @@ def extract_subtitles(audio_path, language):
     # Rediriger la sortie vers un fichier
     with open(nom_audio+"_subtitles.txt", 'w') as f:
         f.write(final_result['text'])
+    return nom_audio+"_subtitles.txt"
 
