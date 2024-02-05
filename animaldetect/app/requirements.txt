@@ -1,3 +1,0 @@
-numpy
-keras_core
-keras_cv
