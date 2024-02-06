@@ -25,7 +25,7 @@ def detect_language(video_path, output_folder):
         detected_language = langdetect.detect(audio_text)
         with open(os.path.join(output_folder, video_name+"_lang.txt"), 'w') as f:
             f.write(detected_language)
-        return detected_language, os.path.join(output_folder, video_name+"_lang.txt")
+        return detected_language, video_name+"_lang.txt"
     except langdetect.lang_detect_exception.LangDetectException as e:
         return f"Erreur lors de la détection de la langue : {e}"
     finally:

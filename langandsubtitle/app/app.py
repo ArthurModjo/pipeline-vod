@@ -2,7 +2,7 @@ from methods import *
 import socketio
 
 # Configure the source directory
-working_directory = '/home/bad/LAB/pipeline-vod/processing'
+working_directory = '/processing'
 
 if __name__ == '__main__':
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     def disconnect():
         print('disconnected from server')
 
-    sio.connect('http://127.0.0.1:5000')
+    sio.connect('http://172.20.0.10:5000')
     # Attendez la déconnexion (ou utilisez une autre logique pour maintenir le programme en cours d'exécution)
     sio.wait()
 

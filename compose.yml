@@ -2,48 +2,70 @@ version: '3'
 
 services:
   moniteur:
-    image: python:3.10-alpine
-    hostname: moniteur
-    working_dir: /D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/moniteur
-    restart: always
+    image: python:3.10.12
+    container_name: moniteur
+    working_dir: /moniteur
     ports:
       - 5000:5000
     volumes:
-      - studio_volume:/D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/
+      - ./moniteur/app:/moniteur
+      - ./processing:/processing
     networks:
-      - sudio_video_network
-
-  downscale:
-    image: python:3.10-alpine
-    hostname: downscale
-    working_dir: /D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/downscale
-    restart: always
+      pipeline-net:
+        ipv4_address: 172.20.0.10
+    restart: on-failure:2
+    command: sh -c "pip install --root-user-action=ignore --no-cache-dir -r requirements.txt && python app.py"
+    
+  downscaler:
+    image: python:3.10.12
+    container_name: downscaler
+    working_dir: /downscaler 
     volumes:
-      - studio_volume:/D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/
+      - ./downscaler/app:/downscaler
+      - ./processing:/processing
     networks:
-      - sudio_video_network
+      - pipeline-net
+    restart: on-failure:2
+    depends_on:
+      - moniteur
+    command: sh -c "pip install --root-user-action=ignore --no-cache-dir -r requirements.txt && python app.py"
+    
   
   langandsubtiles:
-    image: python:3.10-alpine
-    hostname: langandsubtiles
-    working_dir: /D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/langandsubtile
+    image: python:3.10.12
+    container_name: langandsubtiles
+    working_dir: /langandsubtitle
     volumes:
-      - studio_volume:/D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/
+      - ./langandsubtitle/app:/langandsubtitle
+      - ./processing:/processing
     networks:
-      - sudio_video_network
+      - pipeline-net
+    restart: on-failure:2
+    depends_on:
+      - moniteur
+    command: sh -c "pip install --root-user-action=ignore --no-cache-dir -r requirements.txt && python app.py"
+    
 
   animaldetect:
-    image: python:3.10-alpine
-    hostname: animaldetect
-    working_dir: /D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/animaldetect
+    image: python:3.10.12
+    container_name: animaldetect
+    working_dir: /animaldetect
     volumes:
-      - studio_volume:/D/ETUDES/ESIR/ESIR3/CLOUD/pipeline-vod/
+      - ./animaldetect/app:/animaldetect
+      - ./processing:/processing
     networks:
-      - sudio_video_network
+      - pipeline-net
+    restart: on-failure:2
+    depends_on:
+      - moniteur
+    command: sh -c "apt update && apt install -y libgl1 &&  pip install --root-user-action=ignore --no-cache-dir -r requirements.txt && python app.py"
+    
 
 networks:
-  sudio_video_network:
-    driver: bridge  
-volumes:
-  studio_volume:
-    
+  pipeline-net:
+    external: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+        - gateway: 172.20.0.1

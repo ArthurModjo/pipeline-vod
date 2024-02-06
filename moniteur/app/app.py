@@ -7,7 +7,7 @@ import json
 
 sio = socketio.Server(cors_allowed_origins="*")
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = "/home/bad/LAB/pipeline-vod/processing"
+app.config['UPLOAD_FOLDER'] = "/processing"
 
 
 # Dictionnaire des client connectés avec leur services et leur id
@@ -69,10 +69,10 @@ def langandsubtitles_done(sid, data):
     progressing = 3
     print('langandsubtitles_done ', data)
     print(data)
-    sio.emit('your_turn',{'response': data['video']}, room=clients["animaldetector"])
+    sio.emit('your_turn',data, room=clients["animaldetect"])
 
 @sio.event
-def animaldetector_done(sid, data):
+def animaldetect_done(sid, data):
     #update the progressing value
     global progressing
     progressing = 4
@@ -87,4 +87,4 @@ def disconnect(sid):
 if __name__ == '__main__':
     # Wrap the Socket.IO application with the Flask applicationx
     app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
-    eventlet.wsgi.server(eventlet.listen(('127.0.0.1', 5000)), app)
+    eventlet.wsgi.server(eventlet.listen(('', 5000)), app)

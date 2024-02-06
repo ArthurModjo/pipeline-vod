@@ -2,7 +2,7 @@ from moviepy.editor import VideoFileClip
 import os
 import socketio
 
-working_directory = "/home/bad/LAB/pipeline-vod/processing"
+working_directory = "/processing"
 
 def compress_video(input_path, output_directory, target_bitrate="250k"):
     try:
@@ -25,11 +25,11 @@ def compress_video(input_path, output_directory, target_bitrate="250k"):
         audio_temp_path = os.path.splitext(output_path)[0] + ".aac"
         if os.path.exists(audio_temp_path):
             os.remove(audio_temp_path)
-    
+        return output_filename
     except Exception as e:
         print(f"Une erreur s'est produite: {str(e)}")
     
-    return output_filename
+    
 
 # Exemple d'utilisation
 input_video_path = working_directory+"/demo2.mp4"
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     def disconnect():
         print('disconnected from server')
 
-    sio.connect('http://localhost:5000')
+    sio.connect('http://172.20.0.10:5000')
 
 
 
