@@ -1,4 +1,4 @@
 # Ignore folder processing
-./processing/
-./moniteur/app/amazon.py
+processing/
+moniteur/app/amazon.py
 
