@@ -1,0 +1,10 @@
+zebra
+cat
+bird
+sheep
+horse
+giraffe
+bear
+dog
+elephant
+cow
