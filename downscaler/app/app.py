@@ -4,7 +4,7 @@ import socketio
 
 working_directory = "/processing"
 
-def compress_video(input_path, output_directory, target_bitrate="250k"):
+def compress_video(input_path, output_directory, target_bitrate="350k"):
     try:
         # Charger la vidéo
         video_clip = VideoFileClip(input_path)

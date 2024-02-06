@@ -61,9 +61,14 @@ if __name__ == '__main__':
 
     @sio.event
     def your_turn(data):
-        print (data)
         file = detect_animals_and_write_to_file(working_directory + '/' + data["video"], working_directory)
-        sio.emit('animaldetect_done', {'response': file})
+        data = {
+            "video": data["video"],
+            "langue": data["langue"],
+            "subtitles": data["subtitles"],
+            "animal": file
+        }
+        sio.emit('animaldetect_done', data)
 
     @sio.event
     def disconnect():

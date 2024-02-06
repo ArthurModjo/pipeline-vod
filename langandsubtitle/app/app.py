@@ -32,7 +32,7 @@ if __name__ == '__main__':
         subtilte_file = extract_subtitles(video_to_audio(working_directory+"/"+data["response"], working_directory),language, working_directory)
 
         data = {
-            "language" : language_file,
+            "langue" : language_file,
             "subtitles" : subtilte_file,
             "video" : data["response"]
         }

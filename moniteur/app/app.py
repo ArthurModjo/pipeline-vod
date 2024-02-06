@@ -4,6 +4,7 @@ import socketio
 import os
 from flask import Flask, render_template, request
 import json
+from amazon import process_files
 
 sio = socketio.Server(cors_allowed_origins="*")
 app = Flask(__name__)
@@ -16,6 +17,8 @@ progressing  = 0
 
 @app.route('/')
 def index():
+    global progressing
+    progressing = 0
     return render_template('index.html')
 
 @app.route('/to-process', methods=['POST'])
@@ -74,9 +77,10 @@ def langandsubtitles_done(sid, data):
 @sio.event
 def animaldetect_done(sid, data):
     #update the progressing value
+    process_files(data, 'pipeline-vod-group-kdavid')
     global progressing
     progressing = 4
-    print('animaldetector_done ', data)
+    
 
 @sio.event
 def disconnect(sid):
